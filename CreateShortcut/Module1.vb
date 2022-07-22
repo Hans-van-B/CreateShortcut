@@ -2,7 +2,6 @@
 
 Module Module1
     Dim Trace As Integer = 1
-    Dim DryRun As Boolean = False
     Dim Translate As Boolean = False
     Dim TSet As Boolean = False
     Dim CreateDir As Boolean = False
@@ -135,7 +134,14 @@ Module Module1
         XTrace("Location = " & Loc, 2)
         If WindowStyle <> "" Then XTrace("WindowStyle  = " & WindowStyle, 2)
         If Description <> "" Then XTrace("Description  = " & Description, 2)
-        If Arguments <> "" Then XTrace("Arguments    = " & Arguments, 2)
+        If Arguments <> "" Then xtrace("Arguments    = " & Arguments, 2)
+
+        If DryRun Then
+            xtrace_i("Exit on dryrun")
+            GoTo QUIT
+        Else
+            xtrace_i("Proceed")
+        End If
 
         If (Not System.IO.Directory.Exists(Loc)) Then
 
@@ -201,6 +207,7 @@ Module Module1
 
         MyShortcut.Save()
 
+QUIT:
         If WaitForKey Then AnyKey()
     End Sub
 

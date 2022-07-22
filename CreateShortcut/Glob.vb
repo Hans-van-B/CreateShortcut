@@ -1,7 +1,7 @@
 ﻿Module Glob
     ' Public GitHub
     Public AppName As String = "CreateShortcut"
-    Public AppVer As String = "0.01.02"
+    Public AppVer As String = "0.01.03"
 
     Public AppRoot As String = IO.Path.GetDirectoryName(Diagnostics.Process.GetCurrentProcess().MainModule.FileName)
     Public CD As String = My.Computer.FileSystem.CurrentDirectory
@@ -21,4 +21,7 @@
     ' Defaults
     Public Debug As Boolean = False
     Public WaitForKey As Boolean = False
+
+    Public DryRunStr As String = "CreateShortCutDryrun"
+    Public DryRun As Boolean = False
 End Module

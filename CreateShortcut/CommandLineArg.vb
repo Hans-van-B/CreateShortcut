@@ -11,6 +11,7 @@
         For Each argument As String In My.Application.CommandLineArgs
             xtrace_i("Argument=" & argument)
 
+            ' WARNING: Command line arguments are also read in MAIN !!!!!
             '---- Double-dash arguments
             If Left(argument, 2) = "--" Then
                 SwName = Mid(argument, 3)
@@ -33,6 +34,11 @@
                 '---- Double-dash No Assignment
                 If SwName = "help" Then
                     ShowHelp()
+                    ExitProgram = True
+                End If
+
+                If SwName = "xhelp" Then
+                    xtrace("xhelp is not supported!", 0)
                     ExitProgram = True
                 End If
 
@@ -91,7 +97,7 @@
             '---- Else (No dashes, No Assign)
             ' Wait <Ini>
             ' for compatibility with the older wait command
-            If argument = "/?" Then
+            If (argument = "/?") Or (argument = "/h") Then
                 ShowHelp()
                 ExitProgram = True
                 Continue For
@@ -99,10 +105,20 @@
 
         Next
 
+        xtrace_i("Check Environment Variables")
+
         If Environment.GetEnvironmentVariable("DEBUG") = "TRUE" Then
             xtrace_i("Set by environment Debug = True")
             Debug = True
             Verbose = True
+        End If
+
+        ValS = Environment.GetEnvironmentVariable(DryRunStr)    ' Also see the -d switch
+        If ValS = "TRUE" Then
+            xtrace(DryRunStr & " = TRUE", 1)
+            DryRun = True
+        Else
+            xtrace_i(DryRunStr & " = """ & ValS & """")
         End If
 
         xtrace_sube("Read_Command_Line_Arg")
